@@ -470,15 +470,15 @@ ___TEMPLATE_PARAMETERS___
                 "name": "productionHostnameLookupTable",
                 "simpleTableColumns": [
                   {
-                    "defaultValue": "",
-                    "displayName": "Value",
-                    "name": "value",
-                    "type": "TEXT",
                     "valueValidators": [
                       {
                         "type": "NON_EMPTY"
                       }
-                    ]
+                    ],
+                    "defaultValue": "",
+                    "displayName": "Value",
+                    "name": "value",
+                    "type": "TEXT"
                   },
                   {
                     "selectItems": [
@@ -549,24 +549,6 @@ ___WEB_PERMISSIONS___
   {
     "instance": {
       "key": {
-        "publicId": "logging",
-        "versionId": "1"
-      },
-      "param": [
-        {
-          "key": "environments",
-          "value": {
-            "type": 1,
-            "string": "debug"
-          }
-        }
-      ]
-    },
-    "isRequired": true
-  },
-  {
-    "instance": {
-      "key": {
         "publicId": "get_url",
         "versionId": "1"
       },
@@ -588,7 +570,7 @@ ___WEB_PERMISSIONS___
 ___SANDBOXED_JS_FOR_WEB_TEMPLATE___
 
 // Enter your template code here.
-var log = require('logToConsole');
+// var log = require('logToConsole');
 var makeInteger = require('makeInteger');
 var getUrl = require('getUrl');
 
@@ -688,4 +670,4 @@ return undefined;
 
 ___NOTES___
 
-Created on 09/07/2019, 17:50:47
+Created on 09/07/2019, 18:25:52
