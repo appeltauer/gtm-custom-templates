@@ -2,7 +2,7 @@
 
 {
   "displayName": "Sklik retargeting",
-  "description": "Retargeting s custom parametry",
+  "description": "Sklik retargeting with Dynamic Retargeting and Custom Variables.",
   "securityGroups": [],
   "id": "cvt_temp_public_id",
   "type": "TAG",
@@ -251,4 +251,4 @@ data.gtmOnSuccess();
 
 ___NOTES___
 
-Created on 25/09/2019, 16:49:03
+Created on 25/09/2019, 17:27:10
