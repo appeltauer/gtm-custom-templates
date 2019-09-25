@@ -2,7 +2,7 @@
 
 {
   "displayName": "Sklik retargeting",
-  "description": "Sklik retargeting with Dynamic Retargeting and Custom Variables.",
+  "description": "Sklik retargeting with Dynamic Retargeting and Custom Variables. by Roman Appeltauer",
   "securityGroups": [],
   "id": "cvt_temp_public_id",
   "type": "TAG",
@@ -117,6 +117,24 @@ ___TEMPLATE_PARAMETERS___
         "type": "LABEL"
       }
     ]
+  },
+  {
+    "type": "GROUP",
+    "name": "help",
+    "displayName": "Help and support",
+    "groupStyle": "ZIPPY_CLOSED",
+    "subParams": [
+      {
+        "type": "LABEL",
+        "name": "label1",
+        "displayName": "Updates and news here: https://github.com/appeltauer/gtm-custom-templates/tree/master/tags"
+      },
+      {
+        "type": "LABEL",
+        "name": "label2",
+        "displayName": "Submit your issues and feature requests here: https://github.com/appeltauer/gtm-custom-templates/issue"
+      }
+    ]
   }
 ]
 
@@ -198,6 +216,11 @@ ___WEB_PERMISSIONS___
 
 ___SANDBOXED_JS_FOR_WEB_TEMPLATE___
 
+/*
+ * Author: Roman Appeltauer
+ * E-mail: appeltauer@gmail.com
+ */
+
 // Enter your template code here.
 const log = require('logToConsole');
 const encodeUriComponent = require('encodeUriComponent');
@@ -251,4 +274,4 @@ data.gtmOnSuccess();
 
 ___NOTES___
 
-Created on 25/09/2019, 17:27:10
+Created on 25/09/2019, 20:13:52
