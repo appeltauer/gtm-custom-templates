@@ -2,7 +2,7 @@
 
 {
   "displayName": "Sklik retargeting",
-  "description": "Sklik retargeting with Dynamic Retargeting and Custom Variables. by Roman Appeltauer",
+  "description": "Sklik retargeting with Dynamic Retargeting and Custom Variables. by Roman Appeltauer\nv 1.1",
   "securityGroups": [],
   "id": "cvt_temp_public_id",
   "type": "TAG",
@@ -21,7 +21,7 @@ ___TEMPLATE_PARAMETERS___
 
 [
   {
-    "help": "The number (e.g. 123456) from your retargeting code... \n\"seznam_retargeting_id = 123456;\"",
+    "help": "The number (e.g. 123456) from your retargeting code... \n\"seznam_retargeting_id \u003d 123456;\"",
     "valueValidators": [
       {
         "enablingConditions": [],
@@ -44,7 +44,7 @@ ___TEMPLATE_PARAMETERS___
     "type": "GROUP",
     "subParams": [
       {
-        "help": "GTM Variable returning values undefined, 'category' or 'offerdetail'",
+        "help": "GTM Variable returning values undefined, \u0027category\u0027 or \u0027offerdetail\u0027",
         "displayName": "seznam_pagetype",
         "simpleValueType": true,
         "name": "seznam_pagetype",
@@ -60,7 +60,7 @@ ___TEMPLATE_PARAMETERS___
         "valueHint": "{{seznam_category}}"
       },
       {
-        "help": "GTM Variable returning product ID (e.g. on pages where seznam_pagetype is 'offerdetail') values or undefined",
+        "help": "GTM Variable returning product ID (e.g. on pages where seznam_pagetype is \u0027offerdetail\u0027) values or undefined",
         "displayName": "seznam_itemId",
         "simpleValueType": true,
         "name": "seznam_itemId",
@@ -112,31 +112,89 @@ ___TEMPLATE_PARAMETERS___
         "type": "SIMPLE_TABLE"
       },
       {
-        "displayName": "Note: Create your own custom variables. It will be passed to Sklik as additional URL parameters. e.g. user-logged-in with value 1 will be passed as &user-logged-in=1",
+        "displayName": "Note: Create your own custom variables. It will be passed to Sklik as additional URL parameters. e.g. user-logged-in with value 1 will be passed as \u0026user-logged-in\u003d1",
         "name": "Explanation",
         "type": "LABEL"
       }
     ]
   },
   {
-    "type": "GROUP",
-    "name": "help",
     "displayName": "Help and support",
+    "name": "help",
     "groupStyle": "ZIPPY_CLOSED",
+    "type": "GROUP",
     "subParams": [
       {
-        "type": "LABEL",
+        "displayName": "Updates and news here: https://github.com/appeltauer/gtm-custom-templates/tree/master/tags",
         "name": "label1",
-        "displayName": "Updates and news here: https://github.com/appeltauer/gtm-custom-templates/tree/master/tags"
+        "type": "LABEL"
       },
       {
-        "type": "LABEL",
+        "displayName": "Submit your issues and feature requests here: https://github.com/appeltauer/gtm-custom-templates/issue",
         "name": "label2",
-        "displayName": "Submit your issues and feature requests here: https://github.com/appeltauer/gtm-custom-templates/issue"
+        "type": "LABEL"
       }
     ]
   }
 ]
+
+
+___SANDBOXED_JS_FOR_WEB_TEMPLATE___
+
+/*
+ * Author: Roman Appeltauer
+ * E-mail: appeltauer@gmail.com
+ */
+
+// Enter your template code here.
+const log = require('logToConsole');
+const encodeUriComponent = require('encodeUriComponent');
+const sendPixel = require('sendPixel');
+const getUrl = require('getUrl');
+const getType = require('getType');
+const query = require('queryPermission');
+
+var url = getUrl();
+var rtgId = data.SklikID;
+var category = (data.seznam_category || '')+'';
+var itemId = (data.seznam_itemId || '')+'';
+var pageType = (data.seznam_pagetype || '')+'';
+var newQuery = [];
+
+if (getUrl('query').length > 0) { newQuery.push(getUrl('query')); }
+
+for (var customVarRow in data.CustomVarsTable) {
+  var customVar = data.CustomVarsTable[customVarRow];
+  
+  if (getType(customVar.Value) !== 'undefined' || customVar.Value !== '') {
+    newQuery.push(customVar.VariableName+'='+customVar.Value);
+  }
+}
+
+var newURL = url.split('?')[0];
+if (newQuery.length > 0) {
+  var newURL = newURL + '?' + newQuery.join('&');
+}
+
+if (getUrl('fragment').length > 0) {
+  newURL = newURL + '#' + getUrl('fragment');
+}
+
+var src = "https://c.imedia.cz/retargeting?" + "id=" + rtgId + "&category=" + encodeUriComponent(category) + "&itemId=" + encodeUriComponent(itemId) + "&url=" + encodeUriComponent(newURL);
+if (pageType) {src += "&pageType=" + encodeUriComponent(pageType);}
+
+log('data =', data);
+log('url = ', url);
+log('newURL = ', newURL);
+log('output url = ', src);
+
+if (query('send_pixel', src)) {
+  sendPixel(src);
+}
+
+
+// Call data.gtmOnSuccess when the tag is finished.
+data.gtmOnSuccess();
 
 
 ___WEB_PERMISSIONS___
@@ -214,64 +272,13 @@ ___WEB_PERMISSIONS___
 ]
 
 
-___SANDBOXED_JS_FOR_WEB_TEMPLATE___
+___TESTS___
 
-/*
- * Author: Roman Appeltauer
- * E-mail: appeltauer@gmail.com
- */
-
-// Enter your template code here.
-const log = require('logToConsole');
-const encodeUriComponent = require('encodeUriComponent');
-const sendPixel = require('sendPixel');
-const getUrl = require('getUrl');
-const getType = require('getType');
-const query = require('queryPermission');
-
-var url = getUrl();
-var rtgId = data.SklikID;
-var category = data.seznam_category || '';
-var itemId = data.seznam_itemId || '';
-var pageType = data.seznam_pagetype || '';
-var newQuery = [];
-
-if (getUrl('query').length > 0) { newQuery.push(getUrl('query')); }
-
-for (var customVarRow in data.CustomVarsTable) {
-  var customVar = data.CustomVarsTable[customVarRow];
-  
-  if (getType(customVar.Value) !== 'undefined' || customVar.Value !== '') {
-    newQuery.push(customVar.VariableName+'='+customVar.Value);
-  }
-}
-
-var newURL = url.split('?')[0];
-if (newQuery.length > 0) {
-  var newURL = newURL + '?' + newQuery.join('&');
-}
-
-if (getUrl('fragment').length > 0) {
-  newURL = newURL + '#' + getUrl('fragment');
-}
-
-var src = "https://c.imedia.cz/retargeting?" + "id=" + rtgId + "&category=" + encodeUriComponent(category) + "&itemId=" + encodeUriComponent(itemId) + "&url=" + encodeUriComponent(newURL);
-if (pageType) {src += "&pageType=" + encodeUriComponent(pageType);}
-
-log('data =', data);
-log('url = ', url);
-log('newURL = ', newURL);
-log('output url = ', src);
-
-if (query('send_pixel', src)) {
-  sendPixel(src);
-}
-
-
-// Call data.gtmOnSuccess when the tag is finished.
-data.gtmOnSuccess();
+scenarios: []
 
 
 ___NOTES___
 
-Created on 25/09/2019, 20:13:52
+Created on 03/01/2020, 23:21:46
+
+
